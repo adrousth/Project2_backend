@@ -22,6 +22,10 @@ public class User {
         this.positionRole = positionRole;
     }
 
+    public User() {
+
+    }
+
     public int getUserId() {
         return userId;
     }

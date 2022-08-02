@@ -1,7 +1,20 @@
 package com.revature;
 
+import com.revature.controller.Controller;
+import com.revature.controller.UserController;
+import io.javalin.Javalin;
+
 public class Main {
     public static void main(String[] args) {
+        Javalin app = Javalin.create();
+
+        Controller[] controllers = { new UserController() };
+
+        for (int i = 0; i <controllers.length; i++) {
+            controllers[i].mapEndpoints(app);
+        }
+
+        app.start(8080);
         System.out.println("Hello world!");
     }
 }
