@@ -6,17 +6,17 @@ create table users (
 	last_name varchar(50),
 	company varchar(50) not null,
 	user_password varchar(50) not null,
-	postion_role varchar(20) not null check (postion_role in ('hospital_admin', 'warranty_manager'))
-) 
+	position_role varchar(20) not null check (position_role in ('hospital_admin', 'warranty_manager'))
+);
 
 
 
 create table devices (
 	device_id serial primary key,
 	device_type varchar(50) not null
-)
+);
 
-drop table if exists device_warranties
+drop table if exists device_warranties;
 create table device_warranties (
 	warranty_id serial primary key,
 	device_id int not null,
@@ -33,13 +33,13 @@ create table device_warranties (
 	constraint fk_device_id foreign key (device_id) references devices(device_id)
 
 	
-)
-
-truncate device_warranties
+);
 
 
 
-insert into users (username, first_name, last_name, company, user_password, postion_role) 
+
+
+insert into users (username, first_name, last_name, company, user_password, position_role) 
 values ('bobby', 'bob', 'smith', 'Ink INC', 'password', 'hospital_admin')
 
 select * from users
@@ -53,5 +53,5 @@ insert into device_warranties (device_id, warranty_issue_date, warranty_expirati
 
 select * from device_warranties
 
-
+truncate device_warranties, users;
 
