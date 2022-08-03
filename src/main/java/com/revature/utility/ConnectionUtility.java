@@ -10,13 +10,12 @@ public class ConnectionUtility {
 
     public static Connection createConnection() throws SQLException {
 
-//        DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "mAshgAey208");
-         Driver postgresDriver = new Driver();
-         DriverManager.registerDriver(postgresDriver);
+        Driver postgresDriver = new Driver();
+        DriverManager.registerDriver(postgresDriver);
 
         String url = System.getenv("db_url");
         String username = System.getenv("db_username");
-        String password = System.getenv("db_password)");
+        String password = System.getenv("db_password");
         Connection con = DriverManager.getConnection(url, username, password);
 
         return con;
