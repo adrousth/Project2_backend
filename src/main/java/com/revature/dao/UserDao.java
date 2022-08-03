@@ -22,10 +22,10 @@ public class UserDao {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                return new User(rs.getInt("userId"), rs.getString("username"),
-                        rs.getString("firstName"), rs.getString("lastName"),
-                        rs.getString("company"), rs.getString("password"),
-                        rs.getString("positionRole"));
+                return new User(rs.getInt("user_id"), rs.getString("username"),
+                        rs.getString("first_name"), rs.getString("last_name"),
+                        rs.getString("company"), rs.getString("user_password"),
+                        rs.getString("position_role"));
             } else {
                 return null;
             }

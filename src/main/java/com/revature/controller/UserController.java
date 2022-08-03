@@ -7,6 +7,7 @@ import io.javalin.Javalin;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
 
 public class UserController implements Controller {
 
@@ -32,7 +33,7 @@ public class UserController implements Controller {
                 session.setAttribute("logged_in_user", loggedInUser);
 
                 ctx.json(loggedInUser);
-            } catch (InvalidLoginException e) {
+            } catch (InvalidLoginException | SQLException e) {
                 ctx.result(e.getMessage());
                 ctx.status(400);
             }
