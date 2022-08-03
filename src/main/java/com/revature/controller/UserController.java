@@ -38,6 +38,30 @@ public class UserController implements Controller {
                 ctx.status(400);
             }
         });
+
+        app.post("/logout", ctx -> {
+            HttpServletRequest req = ctx.req;
+
+            HttpSession session = req.getSession();
+            ctx.result("Successfully logged out");
+            session.invalidate();
+        });
+
+        app.get("/current-user", ctx -> {
+            HttpServletRequest req = ctx.req;
+
+            HttpSession session = req.getSession();
+            User myUser = (User) session.getAttribute("logged_in_user"); // Downcast the Object return type to User
+            // The underlying object is still a User object
+
+            if (myUser == null) {
+                ctx.result("You are not logged in!");
+                ctx.status(404);
+            } else {
+                ctx.json(myUser);
+                ctx.status(200);
+            }
+        });
     }
 
 }
