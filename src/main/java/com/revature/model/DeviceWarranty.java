@@ -1,21 +1,22 @@
 package com.revature.model;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class DeviceWarranty {
     private int warrantyId;
     private int deviceId;
-    private String warrantyIssueDate;
-    private String warrantyExpirationDate;
+    private Date warrantyIssueDate;
+    private Date warrantyExpirationDate;
     private float warrantyAmount;
-    private String requestIssueDate;
+    private Date requestIssueDate;
     private String recallStatus;
     private boolean confirmation;
     private String warrantyRequester;
     private String warrantyResolver;
 
-    public DeviceWarranty(int warrantyId, int deviceId, String warrantyIssueDate, String warrantyExpirationDate,
-                          float warrantyAmount, String requestIssueDate, String recallStatus, boolean confirmation,
+    public DeviceWarranty(int warrantyId, int deviceId, Date warrantyIssueDate, Date warrantyExpirationDate,
+                          float warrantyAmount, Date requestIssueDate, String recallStatus, boolean confirmation,
                           String warrantyRequester, String warrantyResolver) {
         this.warrantyId = warrantyId;
         this.deviceId = deviceId;
@@ -45,19 +46,19 @@ public class DeviceWarranty {
         this.deviceId = deviceId;
     }
 
-    public String getWarrantyIssueDate() {
+    public Date getWarrantyIssueDate() {
         return warrantyIssueDate;
     }
 
-    public void setWarrantyIssueDate(String warrantyIssueDate) {
+    public void setWarrantyIssueDate(Date warrantyIssueDate) {
         this.warrantyIssueDate = warrantyIssueDate;
     }
 
-    public String getWarrantyExpirationDate() {
+    public Date getWarrantyExpirationDate() {
         return warrantyExpirationDate;
     }
 
-    public void setWarrantyExpirationDate(String warrantyExpirationDate) {
+    public void setWarrantyExpirationDate(Date warrantyExpirationDate) {
         this.warrantyExpirationDate = warrantyExpirationDate;
     }
 
@@ -69,11 +70,11 @@ public class DeviceWarranty {
         this.warrantyAmount = warrantyAmount;
     }
 
-    public String getRequestIssueDate() {
+    public Date getRequestIssueDate() {
         return requestIssueDate;
     }
 
-    public void setRequestIssueDate(String requestIssueDate) {
+    public void setRequestIssueDate(Date requestIssueDate) {
         this.requestIssueDate = requestIssueDate;
     }
 
@@ -127,10 +128,10 @@ public class DeviceWarranty {
         return "DeviceWarranty{" +
                 "warrantyId=" + warrantyId +
                 ", deviceId=" + deviceId +
-                ", warrantyIssueDate='" + warrantyIssueDate + '\'' +
-                ", warrantyExpirationDate='" + warrantyExpirationDate + '\'' +
+                ", warrantyIssueDate=" + warrantyIssueDate +
+                ", warrantyExpirationDate=" + warrantyExpirationDate +
                 ", warrantyAmount=" + warrantyAmount +
-                ", requestIssueDate='" + requestIssueDate + '\'' +
+                ", requestIssueDate=" + requestIssueDate +
                 ", recallStatus='" + recallStatus + '\'' +
                 ", confirmation=" + confirmation +
                 ", warrantyRequester='" + warrantyRequester + '\'' +
