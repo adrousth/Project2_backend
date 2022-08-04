@@ -7,7 +7,9 @@ import io.javalin.Javalin;
 
 public class Main {
     public static void main(String[] args) {
-        Javalin app = Javalin.create();
+        Javalin app = Javalin.create(javalinConfig -> {
+            javalinConfig.enableCorsForAllOrigins();
+        });
 
         Controller[] controllers = { new UserController(), new WarrantyController()};
 
