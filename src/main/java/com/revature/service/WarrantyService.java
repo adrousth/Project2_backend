@@ -20,4 +20,15 @@ public class WarrantyService {
     public List<DeviceWarranty> getAllWarranties() {
         return warrantyDao.getAllWarranties();
     }
+
+    public DeviceWarranty addNewWarranty(DeviceWarranty newWarranty) {
+        // TODO add business logic!!!
+        return warrantyDao.addNewWarranty(newWarranty);
+
+    }
+
+    public DeviceWarranty updateWarranty(DeviceWarranty warrantyUpdate) {
+        // TODO add business logic!!!
+        return warrantyDao.updateWarranty(warrantyUpdate);
+    }
 }

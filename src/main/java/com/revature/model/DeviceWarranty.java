@@ -1,6 +1,6 @@
 package com.revature.model;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Objects;
 
 public class DeviceWarranty {
@@ -14,6 +14,7 @@ public class DeviceWarranty {
     private boolean confirmation;
     private String warrantyRequester;
     private String warrantyResolver;
+    public DeviceWarranty(){}
 
     public DeviceWarranty(int warrantyId, int deviceId, Date warrantyIssueDate, Date warrantyExpirationDate,
                           float warrantyAmount, Date requestIssueDate, String recallStatus, boolean confirmation,

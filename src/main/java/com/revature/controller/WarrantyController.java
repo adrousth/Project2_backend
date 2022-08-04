@@ -1,5 +1,6 @@
 package com.revature.controller;
 
+import com.revature.model.DeviceWarranty;
 import com.revature.model.User;
 import com.revature.service.WarrantyService;
 import io.javalin.Javalin;
@@ -17,24 +18,68 @@ public class WarrantyController implements Controller{
     @Override
     public void mapEndpoints(Javalin app) {
         app.get("/warranties", ctx -> {
-            System.out.println("warranties");
+
             HttpServletRequest req = ctx.req;
 
             HttpSession session = req.getSession();
-            User myUser = (User) session.getAttribute("logged_in_user"); // Downcast the Object return type to User
-            // The underlying object is still a User object
-            System.out.println(myUser);
+            User myUser = (User) session.getAttribute("logged_in_user");
+
             if (myUser == null) {
                 ctx.result("You are not logged in!");
                 ctx.status(404);
             } else if (myUser.getPositionRole().equals("hospital_admin")){
-                System.out.println("hospital admin warranties");
+
                 ctx.json(warrantyService.getWarrantiesByUsername(myUser.getUsername()));
                 ctx.status(200);
             } else if (myUser.getPositionRole().equals("warranty_manager")) {
-                System.out.println("warranty manager warranties");
+
                 ctx.json(warrantyService.getAllWarranties());
                 ctx.status(200);
+            }
+        });
+
+        app.post("/warranty", ctx -> {
+            HttpServletRequest req = ctx.req;
+
+            HttpSession session = req.getSession();
+            User myUser = (User) session.getAttribute("logged_in_user");
+
+
+            if (myUser == null) {
+                ctx.result("You are not logged in!");
+                ctx.status(404);
+            } else if (myUser.getPositionRole().equals("hospital_admin")){
+
+                DeviceWarranty newWarranty = ctx.bodyAsClass(DeviceWarranty.class);
+                newWarranty.setWarrantyRequester(myUser.getUsername());
+                ctx.json(warrantyService.addNewWarranty(newWarranty));
+                ctx.status(200);
+            } else {
+
+                ctx.result("You are not logged in as a hospital admin!");
+                ctx.status(404);
+            }
+        });
+
+        app.put("/warranty", ctx -> {
+            HttpServletRequest req = ctx.req;
+
+            HttpSession session = req.getSession();
+            User myUser = (User) session.getAttribute("logged_in_user");
+
+            if (myUser == null) {
+                ctx.result("You are not logged in!");
+                ctx.status(404);
+            } else if (myUser.getPositionRole().equals("warranty_manager")){
+
+                DeviceWarranty warrantyUpdate = ctx.bodyAsClass(DeviceWarranty.class);
+                warrantyUpdate.setWarrantyResolver(myUser.getUsername());
+                ctx.json(warrantyService.updateWarranty(warrantyUpdate));
+                ctx.status(200);
+            } else {
+
+                ctx.result("You are not logged in as a warranty manager!");
+                ctx.status(404);
             }
         });
     }
