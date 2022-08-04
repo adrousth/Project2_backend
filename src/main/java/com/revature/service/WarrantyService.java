@@ -4,6 +4,7 @@ import com.revature.dao.WarrantyDao;
 import com.revature.model.DeviceWarranty;
 
 import java.util.List;
+import java.util.Map;
 
 public class WarrantyService {
 
@@ -27,8 +28,8 @@ public class WarrantyService {
 
     }
 
-    public DeviceWarranty updateWarranty(DeviceWarranty warrantyUpdate) {
+    public List<DeviceWarranty> updateWarranty(Map<String, String> warranties, String username) {
         // TODO add business logic!!!
-        return warrantyDao.updateWarranty(warrantyUpdate);
+        return warrantyDao.updateWarranty(warranties, username);
     }
 }

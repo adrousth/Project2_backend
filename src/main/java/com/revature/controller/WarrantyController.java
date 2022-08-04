@@ -1,5 +1,6 @@
 package com.revature.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.model.DeviceWarranty;
 import com.revature.model.User;
 import com.revature.service.WarrantyService;
@@ -7,6 +8,7 @@ import io.javalin.Javalin;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 public class WarrantyController implements Controller{
 
@@ -71,10 +73,12 @@ public class WarrantyController implements Controller{
                 ctx.result("You are not logged in!");
                 ctx.status(404);
             } else if (myUser.getPositionRole().equals("warranty_manager")){
-
-                DeviceWarranty warrantyUpdate = ctx.bodyAsClass(DeviceWarranty.class);
-                warrantyUpdate.setWarrantyResolver(myUser.getUsername());
-                ctx.json(warrantyService.updateWarranty(warrantyUpdate));
+                ObjectMapper om = new ObjectMapper();
+                Map<String, String> warranties = om.readValue(ctx.body(), Map.class);
+                System.out.println(warranties);
+                //DeviceWarranty warrantyUpdate = ctx.bodyAsClass(DeviceWarranty.class);
+                String username = myUser.getUsername();
+                ctx.json(warrantyService.updateWarranty(warranties, username));
                 ctx.status(200);
             } else {
 

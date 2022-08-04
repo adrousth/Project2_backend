@@ -7,6 +7,7 @@ import com.revature.utility.ConnectionUtility;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class WarrantyDao {
@@ -103,26 +104,31 @@ public class WarrantyDao {
         }
     }
 
-    public DeviceWarranty updateWarranty(DeviceWarranty warrantyUpdate) {
+    public List<DeviceWarranty> updateWarranty(Map<String, String> warranties, String username) {
         try (Connection con = ConnectionUtility.createConnection()) {
 
-            PreparedStatement ps = con.prepareStatement("update device_warranties set recall_status = ?," +
-                    "confirmation = true, warranty_resolver = ? where warranty_id = ? RETURNING *");
 
-            ps.setString(1, warrantyUpdate.getRecallStatus());
-            ps.setString(2, warrantyUpdate.getWarrantyResolver());
-            ps.setInt(3, warrantyUpdate.getWarrantyId());
-
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return new DeviceWarranty(rs.getInt("warranty_id"), rs.getString("device_type"),
-                        rs.getDate("warranty_issue_date"), rs.getDate("warranty_expiration_date"),
-                        rs.getFloat("warranty_amount"), rs.getDate("request_issue_date"),
-                        rs.getString("recall_status"), rs.getBoolean("confirmation"),
-                        rs.getString("warranty_requester"), rs.getString("warranty_resolver"));
-            } else {
-                return null;
+            List<DeviceWarranty> updatedWarranties = new ArrayList<>();
+            for (Map.Entry<String, String> warranty : warranties.entrySet()) {
+                PreparedStatement ps = con.prepareStatement("update device_warranties set recall_status = ?," +
+                        "confirmation = true, warranty_resolver = ? where warranty_id = ? RETURNING *");
+                ps.setString(1, warranty.getValue());
+                ps.setString(2, username);
+                ps.setInt(3, Integer.parseInt(warranty.getKey()));
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    updatedWarranties.add(new DeviceWarranty(rs.getInt("warranty_id"), rs.getString("device_type"),
+                            rs.getDate("warranty_issue_date"), rs.getDate("warranty_expiration_date"),
+                            rs.getFloat("warranty_amount"), rs.getDate("request_issue_date"),
+                            rs.getString("recall_status"), rs.getBoolean("confirmation"),
+                            rs.getString("warranty_requester"), rs.getString("warranty_resolver")));
+                }
             }
+
+            return updatedWarranties;
+
+
+
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
