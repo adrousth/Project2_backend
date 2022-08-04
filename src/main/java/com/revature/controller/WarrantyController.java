@@ -53,7 +53,7 @@ public class WarrantyController implements Controller{
                 DeviceWarranty newWarranty = ctx.bodyAsClass(DeviceWarranty.class);
                 newWarranty.setWarrantyRequester(myUser.getUsername());
                 ctx.json(warrantyService.addNewWarranty(newWarranty));
-                ctx.status(200);
+                ctx.status(201);
             } else {
 
                 ctx.result("You are not logged in as a hospital admin!");

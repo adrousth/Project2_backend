@@ -21,7 +21,7 @@ public class WarrantyDao {
             List<DeviceWarranty> warranties = new ArrayList<>();
             while (rs.next()) {
                 int warrantyId = rs.getInt("warranty_id");
-                int deviceId = rs.getInt("device_id");
+                String deviceType = rs.getString("device_type");
                 Date issueDate = rs.getDate("warranty_issue_date");
                 Date warrantyExpirationDate = rs.getDate("warranty_expiration_date");
                 float amount = rs.getFloat("warranty_amount");
@@ -30,7 +30,7 @@ public class WarrantyDao {
                 boolean confirmation = rs.getBoolean("confirmation");
                 String requester = rs.getString("warranty_requester");
                 String resolver = rs.getString("warranty_resolver");
-                DeviceWarranty warranty = new DeviceWarranty(warrantyId, deviceId, issueDate, warrantyExpirationDate, amount, requestIssueDate, recallStatus, confirmation, requester, resolver);
+                DeviceWarranty warranty = new DeviceWarranty(warrantyId, deviceType, issueDate, warrantyExpirationDate, amount, requestIssueDate, recallStatus, confirmation, requester, resolver);
 
                 warranties.add(warranty); // Add user object to users List
             }
@@ -52,7 +52,7 @@ public class WarrantyDao {
             List<DeviceWarranty> warranties = new ArrayList<>();
             while (rs.next()) {
                 int warrantyId = rs.getInt("warranty_id");
-                int deviceId = rs.getInt("device_id");
+                String deviceType = rs.getString("device_type");
                 Date issueDate = rs.getDate("warranty_issue_date");
                 Date warrantyExpirationDate = rs.getDate("warranty_expiration_date");
                 float amount = rs.getFloat("warranty_amount");
@@ -61,7 +61,7 @@ public class WarrantyDao {
                 boolean confirmation = rs.getBoolean("confirmation");
                 String requester = rs.getString("warranty_requester");
                 String resolver = rs.getString("warranty_resolver");
-                DeviceWarranty warranty = new DeviceWarranty(warrantyId, deviceId, issueDate, warrantyExpirationDate, amount, requestIssueDate, recallStatus, confirmation, requester, resolver);
+                DeviceWarranty warranty = new DeviceWarranty(warrantyId, deviceType, issueDate, warrantyExpirationDate, amount, requestIssueDate, recallStatus, confirmation, requester, resolver);
 
                 warranties.add(warranty); // Add user object to users List
             }
@@ -76,10 +76,10 @@ public class WarrantyDao {
         try (Connection con = ConnectionUtility.createConnection()) {
 
             PreparedStatement ps = con.prepareStatement("insert into device_warranties" +
-                    "(device_id, warranty_issue_date, warranty_expiration_date, warranty_amount, warranty_requester)" +
+                    "(device_type, warranty_issue_date, warranty_expiration_date, warranty_amount, warranty_requester)" +
                     "values (?, ?, ?, ?, ?) RETURNING *");
 
-            ps.setInt(1, newWarranty.getDeviceId());
+            ps.setString(1, newWarranty.getDeviceType());
             ps.setDate(2, newWarranty.getWarrantyIssueDate());
             ps.setDate(3, newWarranty.getWarrantyExpirationDate());
             ps.setFloat(4, newWarranty.getWarrantyAmount());
@@ -89,7 +89,7 @@ public class WarrantyDao {
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new DeviceWarranty(rs.getInt("warranty_id"), rs.getInt("device_id"),
+                return new DeviceWarranty(rs.getInt("warranty_id"), rs.getString("device_type"),
                         rs.getDate("warranty_issue_date"), rs.getDate("warranty_expiration_date"),
                         rs.getFloat("warranty_amount"), rs.getDate("request_issue_date"),
                         rs.getString("recall_status"), rs.getBoolean("confirmation"),
@@ -115,7 +115,7 @@ public class WarrantyDao {
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new DeviceWarranty(rs.getInt("warranty_id"), rs.getInt("device_id"),
+                return new DeviceWarranty(rs.getInt("warranty_id"), rs.getString("device_type"),
                         rs.getDate("warranty_issue_date"), rs.getDate("warranty_expiration_date"),
                         rs.getFloat("warranty_amount"), rs.getDate("request_issue_date"),
                         rs.getString("recall_status"), rs.getBoolean("confirmation"),
