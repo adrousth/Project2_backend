@@ -127,7 +127,7 @@ public class WarrantyDao {
                             rs.getString("warranty_requester"), rs.getString("warranty_resolver")));
                 }
             }
-
+            
             return updatedWarranties;
 
 
