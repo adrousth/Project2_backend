@@ -3,6 +3,7 @@ package com.revature.dao;
 import com.revature.model.DeviceWarranty;
 import com.revature.model.User;
 import com.revature.utility.ConnectionUtility;
+import sun.font.TrueTypeFont;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -110,11 +111,13 @@ public class WarrantyDao {
 
             List<DeviceWarranty> updatedWarranties = new ArrayList<>();
             for (Map.Entry<String, String> warranty : warranties.entrySet()) {
+
                 PreparedStatement ps = con.prepareStatement("update device_warranties set recall_status = ?," +
-                        "confirmation = true, warranty_resolver = ? where warranty_id = ? RETURNING *");
+                        "confirmation = ?, warranty_resolver = ? where warranty_id = ? RETURNING *");
                 ps.setString(1, warranty.getValue());
-                ps.setString(2, username);
-                ps.setInt(3, Integer.parseInt(warranty.getKey()));
+                ps.setBoolean(2, warranty.getValue().equals("approved"));
+                ps.setString(3, username);
+                ps.setInt(4, Integer.parseInt(warranty.getKey()));
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     updatedWarranties.add(new DeviceWarranty(rs.getInt("warranty_id"), rs.getString("device_type"),

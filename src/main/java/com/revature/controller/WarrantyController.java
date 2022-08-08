@@ -1,6 +1,7 @@
 package com.revature.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.exception.InvalidParameterException;
 import com.revature.model.DeviceWarranty;
 import com.revature.model.User;
 import com.revature.service.WarrantyService;
@@ -40,6 +41,7 @@ public class WarrantyController implements Controller{
             }
         });
 
+        // add new warranty
         app.post("/warranty", ctx -> {
             HttpServletRequest req = ctx.req;
 
@@ -51,11 +53,18 @@ public class WarrantyController implements Controller{
                 ctx.result("You are not logged in!");
                 ctx.status(404);
             } else if (myUser.getPositionRole().equals("hospital_admin")){
-
-                DeviceWarranty newWarranty = ctx.bodyAsClass(DeviceWarranty.class);
-                newWarranty.setWarrantyRequester(myUser.getUsername());
-                ctx.json(warrantyService.addNewWarranty(newWarranty));
-                ctx.status(201);
+                ObjectMapper om = new ObjectMapper();
+                Map<String, String> newWarranty = om.readValue(ctx.body(), Map.class);
+                //DeviceWarranty newWarranty = ctx.bodyAsClass(DeviceWarranty.class);
+                //newWarranty.setWarrantyRequester(myUser.getUsername());
+                String username = myUser.getUsername();
+                try {
+                    ctx.json(warrantyService.addNewWarranty(newWarranty, username));
+                    ctx.status(201);
+                } catch (InvalidParameterException e) {
+                    ctx.json(e.getMessages());
+                    ctx.status(400);
+                }
             } else {
 
                 ctx.result("You are not logged in as a hospital admin!");
@@ -63,6 +72,7 @@ public class WarrantyController implements Controller{
             }
         });
 
+        // update warranties
         app.put("/warranty", ctx -> {
             HttpServletRequest req = ctx.req;
 
