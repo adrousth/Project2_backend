@@ -127,11 +127,39 @@ public class WarrantyDao {
                             rs.getString("warranty_requester"), rs.getString("warranty_resolver")));
                 }
             }
-            
-            return updatedWarranties;
+
+            //return updatedWarranties;
 
 
 
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try (Connection con = ConnectionUtility.createConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM device_warranties");
+
+
+
+
+            ResultSet rs = ps.executeQuery();
+            List<DeviceWarranty> allWarranties = new ArrayList<>();
+            while (rs.next()) {
+                int warrantyId = rs.getInt("warranty_id");
+                String deviceType = rs.getString("device_type");
+                Date issueDate = rs.getDate("warranty_issue_date");
+                Date warrantyExpirationDate = rs.getDate("warranty_expiration_date");
+                float amount = rs.getFloat("warranty_amount");
+                Date requestIssueDate = rs.getDate("request_issue_date");
+                String recallStatus = rs.getString("recall_status");
+                boolean confirmation = rs.getBoolean("confirmation");
+                String requester = rs.getString("warranty_requester");
+                String resolver = rs.getString("warranty_resolver");
+                DeviceWarranty warranty = new DeviceWarranty(warrantyId, deviceType, issueDate, warrantyExpirationDate, amount, requestIssueDate, recallStatus, confirmation, requester, resolver);
+
+                allWarranties.add(warranty); // Add user object to users List
+            }
+            return allWarranties;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
