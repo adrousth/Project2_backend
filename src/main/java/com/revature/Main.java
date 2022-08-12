@@ -18,6 +18,5 @@ public class Main {
         }
 
         app.start(8080);
-        System.out.println("Hello world!");
     }
 }

@@ -24,7 +24,7 @@ public class UserController implements Controller {
 
             String username = user.getUsername();
             String userPassword = user.getUserPassword();
-
+            System.out.println(username + " " + userPassword);
             try {
                 User loggedInUser = userService.login(username, userPassword);
 
